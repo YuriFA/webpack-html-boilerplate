@@ -33,7 +33,6 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
-    "intl-tel-input": "^14.0.6",
     "normalize.css": "^8.0.1"
   }
 }
