@@ -1,0 +1,36 @@
+
+/* common example
+$font-stack: MuseoSansCyrl, sans-serif;
+
+*,
+*::after,
+*::before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 62.5%;
+
+  @media (max-width: 1440px) {
+    font-size: 53.5%;
+  }
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: $font-stack;
+  color: #000000;
+}
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+}
+*/

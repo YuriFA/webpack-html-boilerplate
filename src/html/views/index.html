@@ -1,0 +1,12 @@
+<% var data = {
+  title: "Page title",
+}; %>
+<%= _.template(require('./../includes/header.html'))(data) %>
+
+<main>
+  <section class="section hero">
+    Hero
+  </section>
+</main>
+
+<%= _.template(require('./../includes/footer.html'))(data) %>

@@ -1,0 +1,40 @@
+/* container example
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+
+  @media (min-width: 769px) {
+    width: 750px;
+  }
+
+  @media (min-width: 993px) {
+    width: 970px;
+  }
+
+  @media (min-width: 1441px) {
+    width: 1348px;
+  }
+}
+
+.container.container-pagecontent-padding {
+  padding-left: 5rem;
+  padding-right: 5rem;
+
+  @media (max-width: 768px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.container.container--small {
+  padding-left: 175px;
+  padding-right: 175px;
+
+  @media (max-width: 1440px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+*/
