@@ -1,6 +1,6 @@
 module.exports = {
   bracketSpacing: true,
-  parser: 'babylon',
+  parser: 'babel',
   semi: false,
   singleQuote: true,
   trailingComma: 'all',
