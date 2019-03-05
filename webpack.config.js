@@ -7,7 +7,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 
-const isProduction = process.env.NODE_ENV === 'production'
+const PRODUCTION_MODE = 'production'
+const isProduction = process.env.NODE_ENV === PRODUCTION_MODE
 
 const generateHtmlPlugins = templateDir => {
   const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir))
@@ -26,8 +27,6 @@ const generateHtmlPlugins = templateDir => {
 }
 
 const htmlPlugins = generateHtmlPlugins('./src/html/views')
-
-const PRODUCTION_MODE = 'production'
 
 const config = {
   entry: ['./src/js/index.js', './src/styles/main.scss'],
