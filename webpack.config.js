@@ -5,7 +5,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const ImageminPlugin = require('imagemin-webpack-plugin').default
+
+const alias = require('./config/webpack/alias')
 
 const PRODUCTION_MODE = 'production'
 const isProduction = process.env.NODE_ENV === PRODUCTION_MODE
@@ -31,9 +32,13 @@ const htmlPlugins = generateHtmlPlugins('./src/html/views')
 const config = {
   entry: ['./src/js/index.js', './src/styles/main.scss'],
   output: {
+    path: path.resolve(__dirname, 'dist'),
     filename: './js/bundle.js',
   },
   devtool: 'source-map',
+  devServer: {
+    publicPath: '/',
+  },
   optimization: {
     minimizer: [
       new TerserPlugin({
@@ -41,6 +46,13 @@ const config = {
         extractComments: true,
       }),
     ],
+  },
+  resolve: {
+    modules: [
+      path.resolve(__dirname, 'src'),
+      path.resolve(__dirname, 'node_modules'),
+    ],
+    alias,
   },
   module: {
     rules: [
@@ -56,14 +68,13 @@ const config = {
         include: path.resolve(__dirname, 'src/styles'),
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
-            options: {},
+            loader: isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           },
           {
             loader: 'css-loader',
             options: {
               sourceMap: true,
-              url: false,
+              url: true,
             },
           },
           {
@@ -86,6 +97,42 @@ const config = {
         include: path.resolve(__dirname, 'src/html/includes'),
         use: ['raw-loader'],
       },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: isProduction ? '/[folder]/[name].[ext]' : '[path][name].[ext]', // TODO: fix paths
+              // outputPath: 'images',
+            },
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65,
+              },
+              // optipng.enabled: false will disable optipng
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: '65-90',
+                speed: 4,
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              // the webp option will enable WEBP
+              webp: {
+                quality: 75,
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -102,10 +149,6 @@ const config = {
         to: './favicon',
       },
       {
-        from: './src/images',
-        to: './images',
-      },
-      {
         from: './src/icons',
         to: './icons',
       },
@@ -114,19 +157,13 @@ const config = {
         to: './docs',
       },
     ]),
-    new ImageminPlugin({
-      disable: !isProduction, // Disable during development
-      test: /images\/\.(jpe?g|png|gif|svg)$/i,
-      pngquant: {
-        quality: '95-100'
-      }
-    })
-  ].concat(htmlPlugins),
+    ...htmlPlugins,
+  ],
 }
 
 module.exports = (env, { mode }) => {
   if (mode === PRODUCTION_MODE) {
-    config.plugins.push(new CleanWebpackPlugin('dist'))
+    config.plugins.push(new CleanWebpackPlugin())
   }
 
   return config
