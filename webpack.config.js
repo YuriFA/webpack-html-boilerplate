@@ -1,6 +1,6 @@
 const path = require('path')
 const fs = require('fs')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -92,41 +92,43 @@ const config = {
     new MiniCssExtractPlugin({
       filename: './css/style.bundle.css',
     }),
-    new CopyWebpackPlugin([
-      {
-        from: './src/fonts',
-        to: './fonts',
-      },
-      {
-        from: './src/favicon',
-        to: './favicon',
-      },
-      {
-        from: './src/images',
-        to: './images',
-      },
-      {
-        from: './src/icons',
-        to: './icons',
-      },
-      {
-        from: './src/docs',
-        to: './docs',
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './src/fonts',
+          to: './fonts',
+        },
+        {
+          from: './src/favicon',
+          to: './favicon',
+        },
+        {
+          from: './src/images',
+          to: './images',
+        },
+        {
+          from: './src/icons',
+          to: './icons',
+        },
+        {
+          from: './src/docs',
+          to: './docs',
+        },
+      ],
+    }),
     new ImageminPlugin({
       disable: !isProduction, // Disable during development
       test: /images\/\.(jpe?g|png|gif|svg)$/i,
       pngquant: {
-        quality: '95-100'
-      }
-    })
+        quality: '95-100',
+      },
+    }),
   ].concat(htmlPlugins),
 }
 
 module.exports = (env, { mode }) => {
   if (mode === PRODUCTION_MODE) {
-    config.plugins.push(new CleanWebpackPlugin('dist'))
+    config.plugins.push(new CleanWebpackPlugin())
   }
 
   return config
