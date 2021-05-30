@@ -1,40 +1,24 @@
-/* container example
-.container {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+// .container {
+//   max-width: calc(1440px - 168px * 2 + 48px * 2);
+//   margin-right: auto;
+//   margin-left: auto;
+//   padding-left: 48px;
+//   padding-right: 48px;
 
-  @media (min-width: 769px) {
-    width: 750px;
-  }
 
-  @media (min-width: 993px) {
-    width: 970px;
-  }
+//   @media (max-width: $screen-md) {
+//     padding-left: 32px;
+//     padding-right: 32px;
+//   }
 
-  @media (min-width: 1441px) {
-    width: 1348px;
-  }
-}
+//   @media (max-width: $screen-xs) {
+//     padding-left: 28px;
+//     padding-right: 28px;
+//   }
 
-.container.container-pagecontent-padding {
-  padding-left: 5rem;
-  padding-right: 5rem;
+//   @media (max-width: $screen-xxs) {
+//     padding-left: 16px;
+//     padding-right: 16px;
+//   }
+// }
 
-  @media (max-width: 768px) {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-.container.container--small {
-  padding-left: 175px;
-  padding-right: 175px;
-
-  @media (max-width: 1440px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-*/

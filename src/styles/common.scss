@@ -1,7 +1,3 @@
-
-/* common example
-$font-stack: MuseoSansCyrl, sans-serif;
-
 *,
 *::after,
 *::before {
@@ -17,20 +13,64 @@ ul {
 
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 
-  @media (max-width: 1440px) {
-    font-size: 53.5%;
+  @media (max-width: $screen-md-xx) {
+    font-size: 58.5%;
+  }
+
+  @media (max-width: $screen-md-x) {
+    font-size: 54.5%;
+  }
+
+  @media (max-width: $screen-md) {
+    font-size: 50.5%;
+  }
+
+  @media (max-width: $screen-sm) {
+    font-size: 74.5%;
+  }
+
+  @media (max-width: $screen-xs) {
+    font-size: 62.5%;
   }
 }
 
 body {
-  font-size: 1.6rem;
-  font-family: $font-stack;
-  color: #000000;
+  min-width: 320px;
+  font-family: $font-main;
+  font-size: 16px;
+  background-color: $color-background;
+  color: $color-main;
 }
 
 .img-responsive {
   max-width: 100%;
   height: auto;
 }
-*/
+
+// ========================
+// UI
+// ========================
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: $font-main;
+  font-weight: 400;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+// ========================
+// Layout
+// ========================
+.mt--auto {
+  margin-top: auto;
+}
+
+.text--semibold {
+  font-weight: 600;
+}

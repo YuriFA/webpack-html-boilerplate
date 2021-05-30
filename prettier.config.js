@@ -1,7 +1,7 @@
 module.exports = {
   bracketSpacing: true,
   parser: 'babel',
-  semi: false,
+  semi: true,
   singleQuote: true,
   trailingComma: 'all',
 }

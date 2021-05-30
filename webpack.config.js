@@ -1,46 +1,48 @@
-const path = require('path')
-const fs = require('fs')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const ImageminPlugin = require('imagemin-webpack-plugin').default
+const path = require('path');
+const fs = require('fs');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const PRODUCTION_MODE = 'production'
-const isProduction = process.env.NODE_ENV === PRODUCTION_MODE
+const PRODUCTION_MODE = 'production';
+const DEVELOPMENT_MODE = 'development';
+const isProduction = process.env.NODE_ENV === PRODUCTION_MODE;
 
-const generateHtmlPlugins = templateDir => {
-  const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir))
+const generateHtmlPlugins = (templateDir) => {
+  const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
 
-  return templateFiles.map(item => {
-    const parts = item.split('.')
-    const name = parts[0]
-    const extension = parts[1]
+  return templateFiles.map((item) => {
+    const parts = item.split('.');
+    const name = parts[0];
+    const extension = parts[1];
 
     return new HtmlWebpackPlugin({
       filename: `${name}.html`,
       template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`),
       inject: false,
-    })
-  })
-}
+    });
+  });
+};
 
-const htmlPlugins = generateHtmlPlugins('./src/html/views')
+const htmlPlugins = generateHtmlPlugins('./src/html/views');
 
 const config = {
+  mode: isProduction ? PRODUCTION_MODE : DEVELOPMENT_MODE,
+  target: 'web',
   entry: ['./src/js/index.js', './src/styles/main.scss'],
   output: {
     filename: './js/bundle.js',
+    assetModuleFilename: (pathData) => {
+      return pathData.filename.replace('src/', '');
+    },
+    clean: true,
+  },
+  stats: {
+    children: true,
   },
   devtool: 'source-map',
   optimization: {
-    minimizer: [
-      new TerserPlugin({
-        sourceMap: true,
-        extractComments: true,
-      }),
-    ],
+    minimize: true,
   },
   module: {
     rules: [
@@ -61,43 +63,40 @@ const config = {
           },
           {
             loader: 'css-loader',
-            options: {
-              sourceMap: true,
-              url: false,
-            },
+            options: { sourceMap: true },
           },
           {
             loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              sourceMap: true,
-            },
+            options: { sourceMap: true },
           },
           {
             loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
+            options: { sourceMap: true },
           },
         ],
       },
       {
         test: /\.html$/,
         include: path.resolve(__dirname, 'src/html/includes'),
-        use: ['raw-loader'],
+        type: 'asset/source',
+      },
+      {
+        test: /\.svg/,
+        include: path.resolve(__dirname, 'src/icons'),
+        type: 'asset/source',
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       },
     ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: './css/style.bundle.css',
+      filename: './style.bundle.css',
     }),
     new CopyWebpackPlugin({
       patterns: [
-        {
-          from: './src/fonts',
-          to: './fonts',
-        },
         {
           from: './src/favicon',
           to: './favicon',
@@ -110,26 +109,9 @@ const config = {
           from: './src/icons',
           to: './icons',
         },
-        {
-          from: './src/docs',
-          to: './docs',
-        },
       ],
     }),
-    new ImageminPlugin({
-      disable: !isProduction, // Disable during development
-      test: /images\/\.(jpe?g|png|gif|svg)$/i,
-      pngquant: {
-        quality: '95-100',
-      },
-    }),
   ].concat(htmlPlugins),
-}
+};
 
-module.exports = (env, { mode }) => {
-  if (mode === PRODUCTION_MODE) {
-    config.plugins.push(new CleanWebpackPlugin())
-  }
-
-  return config
-}
+module.exports = config;

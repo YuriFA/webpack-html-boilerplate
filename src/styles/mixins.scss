@@ -1,0 +1,42 @@
+@mixin text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// ========================
+// Reset
+// ========================
+
+@mixin list-reset {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+@mixin button-reset {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  background: 0;
+  appearance: none;
+  outline: 0;
+  cursor: pointer;
+
+  &[disabled] {
+    cursor: default;
+  }
+}
+
+@mixin input-reset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  background-color: transparent;
+  appearance: none;
+  outline: 0;
+  text-direction: none;
+}

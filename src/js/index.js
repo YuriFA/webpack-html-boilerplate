@@ -1,1 +1,1 @@
-console.log('Webpack html boilerplate js here...')
+console.log('Hello world!')
